@@ -34,43 +34,57 @@ body{
   padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input,select{font-family:inherit}
+select{appearance:none;-webkit-appearance:none}
 .screen{display:none;height:100dvh;flex-direction:column}
 .screen.on{display:flex}
 
 /* ---------- Byggaren ---------- */
-#build{overflow-y:auto;padding:20px 18px 120px}
+#build{overflow-y:auto;padding:18px 16px 118px}
 h1{
-  font-family:var(--disp);font-size:44px;line-height:.9;margin:8px 0 2px;
+  font-family:var(--disp);font-size:42px;line-height:.9;margin:6px 0 2px;
   letter-spacing:.01em;text-transform:uppercase;font-weight:700;
 }
 h1 em{font-style:normal;color:var(--run)}
-.sub{color:var(--dim);font-size:13px;margin:0 0 22px;letter-spacing:.02em}
+.sub{color:var(--dim);font-size:13px;margin:0 0 18px;letter-spacing:.02em}
 
-.setup{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px}
-.field{background:var(--card);border-radius:10px;padding:9px 8px;text-align:center}
-.field label{display:block;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin-bottom:3px}
-.field input{
+.tabs{display:flex;gap:4px;background:var(--card);border-radius:11px;padding:4px;margin-bottom:22px}
+.tabs button{
+  flex:1;border-radius:8px;padding:11px 0;font-family:var(--disp);text-transform:uppercase;
+  font-size:15px;letter-spacing:.05em;font-weight:700;color:var(--dim);white-space:nowrap
+}
+.tabs button.on{background:var(--paper);color:var(--ink)}
+.pane{display:none}
+.pane.on{display:block}
+
+.setup{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:22px}
+.field{background:var(--card);border-radius:10px;padding:9px 6px;text-align:center}
+.field label{display:block;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:3px}
+.field input,.field select{
   width:100%;background:none;border:0;color:var(--paper);text-align:center;
-  font-family:var(--disp);font-size:26px;font-weight:700;padding:0;
+  font-family:var(--disp);font-size:24px;font-weight:700;padding:0;
 }
-.field input:focus{outline:none;color:var(--run)}
+.field select{font-size:16px;text-align-last:center}
+.field input:focus,.field select:focus{outline:none;color:var(--run)}
 
-.rowhead{display:flex;align-items:baseline;justify-content:space-between;margin:0 0 10px}
-.rowhead h2{font-family:var(--disp);text-transform:uppercase;font-size:19px;letter-spacing:.06em;margin:0}
-.shuffle{
-  background:var(--paper);color:var(--ink);border-radius:999px;padding:9px 16px;
-  font-family:var(--disp);text-transform:uppercase;font-size:14px;letter-spacing:.08em;font-weight:700;
+.rowhead{display:flex;align-items:center;gap:8px;margin:0 0 10px}
+.rowhead h2{font-family:var(--disp);text-transform:uppercase;font-size:18px;letter-spacing:.06em;margin:0;flex:1}
+.pill{
+  background:var(--paper);color:var(--ink);border-radius:999px;padding:9px 13px;white-space:nowrap;flex:none;
+  font-family:var(--disp);text-transform:uppercase;font-size:13px;letter-spacing:.06em;font-weight:700;
 }
-.shuffle:active{transform:scale(.96)}
+.pill.ghost{background:none;color:var(--paper);border:1px solid var(--line)}
+.pill:active{transform:scale(.96)}
 
-.block{background:var(--card);border-radius:14px;padding:14px;margin-bottom:10px}
+.block{background:var(--card);border-radius:14px;padding:13px;margin-bottom:9px}
 .block .bh{display:flex;align-items:center;gap:9px;margin-bottom:10px}
 .tag{
-  font-family:var(--disp);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
-  border:1px solid var(--line);border-radius:5px;padding:2px 7px;color:var(--dim)
+  font-family:var(--disp);font-size:12px;letter-spacing:.09em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:5px;padding:2px 7px;color:var(--dim);flex:none
 }
-.bh .amraplen{color:var(--dim);font-size:12px;margin-left:auto}
-.ex{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.bh .meta{color:var(--dim);font-size:12px;margin-left:auto}
+.bh .del{color:var(--dim);font-size:22px;padding:0 2px;line-height:1;flex:none}
+.ex{display:flex;align-items:center;gap:8px;margin-bottom:7px}
 .ex input.reps{
   width:52px;flex:none;background:var(--ink);border:1px solid var(--line);border-radius:8px;
   color:var(--paper);font-family:var(--disp);font-size:20px;font-weight:700;text-align:center;padding:7px 0;
@@ -79,12 +93,32 @@ h1 em{font-style:normal;color:var(--run)}
   flex:1;min-width:0;background:var(--ink);border:1px solid var(--line);border-radius:8px;
   color:var(--paper);font-size:15px;padding:9px 10px;
 }
-.ex input:focus{outline:none;border-color:var(--run)}
 .ex .del{color:var(--dim);font-size:22px;padding:0 4px;line-height:1}
 .addex{color:var(--dim);font-size:13px;padding:6px 0;letter-spacing:.02em}
 
+/* stationsrader */
+.st input.name{
+  width:100%;background:var(--ink);border:1px solid var(--line);border-radius:8px;
+  color:var(--paper);font-size:15px;padding:9px 10px;
+}
+.grid3{display:grid;grid-template-columns:1.15fr 1fr 1.05fr;gap:6px;margin-top:8px}
+.cell{background:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 7px;min-width:0}
+.cell label{display:block;font-size:8.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin-bottom:2px}
+.cell .in{display:flex;align-items:baseline;gap:2px}
+.cell input,.cell select{
+  background:none;border:0;color:var(--paper);padding:0;min-width:0;width:100%;
+  font-family:var(--disp);font-size:19px;font-weight:700;
+}
+.cell select{font-size:14px}
+.cell select.qt{width:2.1em;flex:none;font-size:15px}
+.cell select.un{width:2.6em;flex:none;font-size:11px;color:var(--dim);font-weight:400}
+.cell .unit{font-size:11px;color:var(--dim);flex:none}
+.cell.off{opacity:.38}
+input:focus,select:focus{outline:none}
+.grid3 .cell:focus-within{border-color:var(--run)}
+
 .startbar{
-  position:fixed;left:0;right:0;bottom:0;padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+  position:fixed;left:0;right:0;bottom:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom));
   background:linear-gradient(to top,var(--ink) 62%,transparent);
 }
 .start{
@@ -95,54 +129,62 @@ h1 em{font-style:normal;color:var(--run)}
 
 /* ---------- Körläget ---------- */
 #run{background:var(--ink);transition:background-color .45s ease}
-.track{display:flex;gap:3px;padding:12px 12px 0;flex:none}
+.track{display:flex;gap:2px;padding:12px 10px 0;flex:none}
 .track i{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.22)}
 .track i.done{background:rgba(255,255,255,.75)}
 .track i.now{background:#fff}
-.track i.run{flex:.55}
+.track i.run{flex:.5}
 
-.top{padding:16px 20px 0;flex:none;display:flex;align-items:baseline;gap:10px}
-.lap{font-family:var(--disp);text-transform:uppercase;letter-spacing:.14em;font-size:14px;opacity:.75}
-.phase{font-family:var(--disp);text-transform:uppercase;letter-spacing:.02em;font-size:15px;font-weight:700;margin-left:auto}
+.top{padding:14px 20px 0;flex:none;display:flex;align-items:baseline;gap:10px}
+.lap{font-family:var(--disp);text-transform:uppercase;letter-spacing:.13em;font-size:14px;opacity:.75}
+.tot{font-family:var(--disp);font-size:17px;font-weight:700;margin-left:auto;font-variant-numeric:tabular-nums;opacity:.9}
+.tot span{font-size:10px;letter-spacing:.12em;opacity:.7;font-weight:400;margin-right:5px}
 
-.mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20px;min-height:0}
+.mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 18px;min-height:0}
+.phase{font-family:var(--disp);text-transform:uppercase;letter-spacing:.14em;font-size:14px;opacity:.72;margin-bottom:6px}
 .clock{
-  font-family:var(--disp);font-weight:700;font-size:clamp(88px,30vw,190px);line-height:.82;
+  font-family:var(--disp);font-weight:700;font-size:clamp(80px,27vw,170px);line-height:.82;
   letter-spacing:-.02em;font-variant-numeric:tabular-nums;
 }
 .clock.warn{animation:pulse .5s steps(2,end) infinite}
 @keyframes pulse{50%{opacity:.35}}
 .what{
-  margin-top:22px;text-align:center;font-family:var(--disp);text-transform:uppercase;
+  margin-top:20px;text-align:center;font-family:var(--disp);text-transform:uppercase;
   font-size:clamp(22px,7vw,34px);line-height:1.14;font-weight:700;letter-spacing:.01em;
 }
 .what span{opacity:.6;font-weight:400}
-.hint{margin-top:14px;font-size:13px;opacity:.7;letter-spacing:.02em;text-align:center}
+.spec{
+  margin-top:9px;font-family:var(--disp);text-transform:uppercase;letter-spacing:.05em;
+  font-size:clamp(15px,4.6vw,21px);opacity:.82;text-align:center;
+}
+.hint{margin-top:13px;font-size:13px;opacity:.7;letter-spacing:.02em;text-align:center}
 
-.laps{display:flex;align-items:center;gap:16px;margin-top:26px}
+.laps{display:flex;align-items:center;gap:16px;margin-top:24px}
 .tapvarv{
   border:2px solid rgba(255,255,255,.55);border-radius:999px;padding:12px 22px;
   font-family:var(--disp);text-transform:uppercase;letter-spacing:.08em;font-size:16px;font-weight:700;
 }
 .tapvarv:active{background:rgba(255,255,255,.18)}
-.count{font-family:var(--disp);font-size:52px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.count{font-family:var(--disp);font-size:50px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
 .count small{display:block;font-size:11px;letter-spacing:.12em;opacity:.65;font-weight:400}
 
-.ctrl{flex:none;display:flex;gap:10px;padding:16px 16px calc(20px + env(safe-area-inset-bottom))}
+.ctrl{flex:none;display:flex;gap:10px;padding:16px 14px calc(20px + env(safe-area-inset-bottom))}
 .ctrl button{
   border-radius:13px;padding:17px 0;font-family:var(--disp);text-transform:uppercase;
   letter-spacing:.09em;font-size:18px;font-weight:700;background:rgba(255,255,255,.16);
 }
 .ctrl .next{flex:1;background:#fff;color:var(--ink)}
-.ctrl .small{width:78px;font-size:14px}
+.ctrl .small{width:76px;font-size:14px}
 
 /* ---------- Klart ---------- */
-#done{padding:26px 20px;overflow-y:auto}
-.sum{width:100%;border-collapse:collapse;margin:18px 0 26px}
-.sum td{padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
-.sum td:last-child{text-align:right;font-family:var(--disp);font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+#done{padding:24px 18px;overflow-y:auto}
+.sum{width:100%;border-collapse:collapse;margin:16px 0 24px}
+.sum td{padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.sum td:last-child{text-align:right;font-family:var(--disp);font-size:21px;font-weight:700;font-variant-numeric:tabular-nums}
 .sum td.lbl{color:var(--dim)}
-.total{font-family:var(--disp);font-size:74px;font-weight:700;line-height:.9;font-variant-numeric:tabular-nums}
+.sum tr.j td{font-size:13px}
+.sum tr.j td.lbl{color:#5d6b7a}
+.total{font-family:var(--disp);font-size:72px;font-weight:700;line-height:.9;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -150,20 +192,53 @@ h1 em{font-style:normal;color:var(--run)}
 <!-- ============ BYGG PASS ============ -->
 <section id="build" class="screen on">
   <h1>HIIT<em>&</em>Run</h1>
-  <p class="sub">Bygg passet. Slumpa om du inte orkar tänka.</p>
+  <p class="sub" id="buildSub">Bygg passet. Slumpa om du inte orkar tänka.</p>
 
-  <div class="setup">
-    <div class="field"><label>Uppv min</label><input id="cfgWarm" type="number" inputmode="numeric" value="5"></div>
-    <div class="field"><label>Varv</label><input id="cfgLaps" type="number" inputmode="numeric" value="4"></div>
-    <div class="field"><label>AMRAP min</label><input id="cfgAmrap" type="number" inputmode="numeric" value="4"></div>
-    <div class="field"><label>Löp m</label><input id="cfgDist" type="number" inputmode="numeric" value="800"></div>
+  <div class="tabs">
+    <button id="tabHiit" class="on">HIIT&amp;Run</button>
+    <button id="tabSt">Deadly Dozen</button>
   </div>
 
-  <div class="rowhead">
-    <h2>Blocken</h2>
-    <button class="shuffle" id="shuffle">Slumpa alla</button>
+  <!-- ---- Läge 1: HIIT&Run ---- -->
+  <div class="pane on" id="paneHiit">
+    <div class="setup">
+      <div class="field"><label>Uppv min</label><input id="cfgWarm" type="number" inputmode="numeric" value="5"></div>
+      <div class="field"><label>Varv</label><input id="cfgLaps" type="number" inputmode="numeric" value="4"></div>
+      <div class="field"><label>AMRAP min</label><input id="cfgAmrap" type="number" inputmode="numeric" value="4"></div>
+      <div class="field"><label>Löp m</label><input id="cfgDist" type="number" inputmode="numeric" value="800"></div>
+    </div>
+    <div class="rowhead">
+      <h2>Blocken</h2>
+      <button class="pill" id="shuffle">Slumpa alla</button>
+    </div>
+    <div id="blocks"></div>
   </div>
-  <div id="blocks"></div>
+
+  <!-- ---- Läge 2: Stationer ---- -->
+  <div class="pane" id="paneSt">
+    <div class="setup">
+      <div class="field"><label>Uppv min</label><input id="sWarm" type="number" inputmode="numeric" value="5"></div>
+      <div class="field"><label>Journey</label>
+        <select id="sJourney">
+          <option value="Löpning">Löp</option>
+          <option value="Rodd">Rodd</option>
+          <option value="Ski">Ski</option>
+          <option value="Cykel">Cykel</option>
+          <option value="">Ingen</option>
+        </select>
+      </div>
+      <div class="field"><label>Distans m</label><input id="sDist" type="number" inputmode="numeric" value="400"></div>
+      <div class="field"><label>Vikter</label>
+        <select id="sDiv"><option value="m">Herr</option><option value="f">Dam</option></select>
+      </div>
+    </div>
+    <div class="rowhead">
+      <h2>Stationer</h2>
+      <button class="pill ghost" id="addSt">+ Station</button>
+      <button class="pill" id="loadDD">Originalet</button>
+    </div>
+    <div id="stations"></div>
+  </div>
 
   <div class="startbar"><button class="start" id="go">Starta passet</button></div>
 </section>
@@ -171,10 +246,15 @@ h1 em{font-style:normal;color:var(--run)}
 <!-- ============ KÖR ============ -->
 <section id="run" class="screen">
   <div class="track" id="track"></div>
-  <div class="top"><div class="lap" id="lapLabel"></div><div class="phase" id="phaseLabel"></div></div>
+  <div class="top">
+    <div class="lap" id="lapLabel"></div>
+    <div class="tot" id="totLabel"><span>TOTALT</span>00:00</div>
+  </div>
   <div class="mid">
+    <div class="phase" id="phaseLabel"></div>
     <div class="clock" id="clock">00:00</div>
     <div class="what" id="what"></div>
+    <div class="spec" id="spec"></div>
     <div class="hint" id="hint"></div>
     <div class="laps" id="counter" style="display:none">
       <button class="tapvarv" id="tapvarv">+ Varv</button>
@@ -198,7 +278,7 @@ h1 em{font-style:normal;color:var(--run)}
 </section>
 
 <script>
-/* ---------- Övningsbank, taggad så slumpen blir balanserad ---------- */
+/* ===================== Data ===================== */
 const BANK = [
   ['Goblet squats','ben'], ['Weighted lunges','ben'], ['Jump squats','ben'],
   ['Sandbag lunges','ben'], ['Box step-ups','ben'], ['Wall balls','ben'],
@@ -215,18 +295,40 @@ const REPS = {ben:[10,12,15,20], drag:[12,15,20,25], tryck:[10,12,15,20], helkro
 const PAIRS = [['ben','drag'],['ben','helkropp'],['drag','tryck'],['helkropp','core'],['ben','core'],['drag','helkropp'],['tryck','core']];
 const pick = a => a[Math.floor(Math.random()*a.length)];
 
-/* ---------- Lagring: funkar i förhandsvisning, sparar på riktigt i webbläsaren ---------- */
+const EQUIP = ['Kroppsvikt','Kettlebell','Hantlar','Viktskiva','Skivstång','Sandsäck','Slamball','Medicinboll','Annat'];
+const SHORT = {'Kroppsvikt':'BW','Kettlebell':'KB','Hantlar':'DB','Viktskiva':'WP','Skivstång':'BB','Sandsäck':'SB','Slamball':'SL','Medicinboll':'MB','Annat':''};
+
+/* Deadly Dozen – de tolv Labours i ordning, med tävlingsvikter herr/dam */
+const DD = [
+  ['Farmers carry','Kettlebell',240,'m',   2,24,  2,16],
+  ['Marklyft','Kettlebell',        60,'reps',1,32, 1,24],
+  ['Lunges','Hantlar',             60,'m',   2,12.5,2,7.5],
+  ['Snatch (alt.)','Hantlar',      60,'reps',1,15, 1,9],
+  ['Burpee broad jump','Kroppsvikt',60,'m',  0,0,  0,0],
+  ['Goblet squat','Kettlebell',    60,'reps',1,16, 1,12],
+  ['Front carry','Viktskiva',     240,'m',   1,25, 1,20],
+  ['Push press','Hantlar',         60,'reps',2,12.5,2,6],
+  ['Bear crawl','Kroppsvikt',     120,'m',   0,0,  0,0],
+  ['Clean & press','Viktskiva',    60,'reps',1,15, 1,10],
+  ['Overhead carry','Viktskiva',  180,'m',   1,15, 1,10],
+  ['Devil press','Hantlar',        20,'reps',2,10, 2,5],
+];
+
+/* ===================== Lagring ===================== */
 const mem = {};
 const store = {
   get(k){ try{ return localStorage.getItem(k); }catch(e){ return mem[k] ?? null; } },
   set(k,v){ try{ localStorage.setItem(k,v); }catch(e){ mem[k]=v; } }
 };
-
 const $ = s => document.querySelector(s);
+
+let mode = 'hiit';
 let cfg = {warm:5, laps:4, amrap:4, dist:800};
 let blocks = [];
+let scfg = {warm:5, journey:'Löpning', dist:400, div:'m'};
+let stations = [];
 
-/* ---------- Byggaren ---------- */
+/* ===================== Byggare: HIIT&Run ===================== */
 function randomBlock(){
   const [a,b] = pick(PAIRS);
   const ex = c => { const o = pick(BANK.filter(x=>x[1]===c)); return {reps:pick(REPS[c]), name:o[0]}; };
@@ -252,46 +354,156 @@ function renderBlocks(){
     const el = document.createElement('div');
     el.className = 'block';
     el.innerHTML = `<div class="bh"><span class="tag">Block ${i+1}</span>
-      <span class="amraplen">${cfg.amrap} min AMRAP</span></div>`;
+      <span class="meta">${cfg.amrap} min AMRAP</span></div>`;
     blk.forEach((ex,j)=>{
       const r = document.createElement('div');
       r.className = 'ex';
       r.innerHTML = `<input class="reps" type="number" inputmode="numeric" value="${ex.reps}">
-        <input class="name" value="${ex.name.replace(/"/g,'&quot;')}">
+        <input class="name" value="${esc(ex.name)}">
         <button class="del" aria-label="Ta bort">&times;</button>`;
-      r.querySelector('.reps').oninput = e => ex.reps = +e.target.value || 0;
-      r.querySelector('.name').oninput = e => ex.name = e.target.value;
-      r.querySelector('.del').onclick = () => { blk.splice(j,1); renderBlocks(); };
+      r.querySelector('.reps').oninput = e => { ex.reps = +e.target.value || 0; save(); };
+      r.querySelector('.name').oninput = e => { ex.name = e.target.value; save(); };
+      r.querySelector('.del').onclick = () => { blk.splice(j,1); renderBlocks(); save(); };
       el.appendChild(r);
     });
     const add = document.createElement('button');
     add.className = 'addex'; add.textContent = '+ Lägg till övning';
-    add.onclick = () => { blk.push({reps:10,name:''}); renderBlocks(); };
+    add.onclick = () => { blk.push({reps:10,name:''}); renderBlocks(); save(); };
     el.appendChild(add);
     wrap.appendChild(el);
   });
 }
+const esc = s => String(s).replace(/"/g,'&quot;').replace(/</g,'&lt;');
+
+/* ===================== Byggare: Stationer ===================== */
+function ddStations(){
+  const f = scfg.div === 'f';
+  return DD.map(r => ({
+    name:r[0], equip:r[1], work:r[2], unit:r[3],
+    qty: f ? r[6] : r[4], kg: f ? r[7] : r[5]
+  }));
+}
+function renderStations(){
+  const wrap = $('#stations'); wrap.innerHTML = '';
+  stations.forEach((s,i)=>{
+    const bw = s.equip === 'Kroppsvikt';
+    const el = document.createElement('div');
+    el.className = 'block st';
+    el.innerHTML = `
+      <div class="bh">
+        <span class="tag">${String(i+1).padStart(2,'0')}</span>
+        <span class="meta">${scfg.journey ? scfg.dist + ' m ' + scfg.journey.toLowerCase() + ' före' : 'ingen journey'}</span>
+        <button class="del" aria-label="Ta bort">&times;</button>
+      </div>
+      <input class="name" value="${esc(s.name)}" placeholder="Övningens namn">
+      <div class="grid3">
+        <div class="cell"><label>Redskap</label>
+          <select class="eq">${EQUIP.map(e=>`<option${e===s.equip?' selected':''}>${e}</option>`).join('')}</select>
+        </div>
+        <div class="cell"><label>Work</label>
+          <div class="in"><input class="wk" type="number" inputmode="decimal" value="${s.work}">
+          <select class="un">
+            <option value="reps"${s.unit==='reps'?' selected':''}>reps</option>
+            <option value="m"${s.unit==='m'?' selected':''}>m</option>
+            <option value="kcal"${s.unit==='kcal'?' selected':''}>kcal</option>
+            <option value="sek"${s.unit==='sek'?' selected':''}>sek</option>
+          </select></div>
+        </div>
+        <div class="cell${bw?' off':''}"><label>Vikt</label>
+          <div class="in">
+            <select class="qt">${[1,2].map(q=>`<option value="${q}"${q==(s.qty||1)?' selected':''}>${q}\u00d7</option>`).join('')}</select>
+            <input class="kg" type="number" inputmode="decimal" step="0.5" value="${s.kg||''}" placeholder="0">
+            <span class="unit">kg</span>
+          </div>
+        </div>
+      </div>`;
+    el.querySelector('.del').onclick = () => { stations.splice(i,1); renderStations(); save(); };
+    el.querySelector('.name').oninput = e => { s.name = e.target.value; save(); };
+    el.querySelector('.eq').onchange = e => { s.equip = e.target.value; if(s.equip==='Kroppsvikt'){s.kg=0;s.qty=0;} renderStations(); save(); };
+    el.querySelector('.wk').oninput = e => { s.work = +e.target.value || 0; save(); };
+    el.querySelector('.un').onchange = e => { s.unit = e.target.value; save(); };
+    el.querySelector('.qt').onchange = e => { s.qty = +e.target.value; save(); };
+    el.querySelector('.kg').oninput = e => { s.kg = +e.target.value || 0; if(!s.qty) s.qty = 1; save(); };
+    wrap.appendChild(el);
+  });
+}
+function readScfg(){
+  scfg.warm    = Math.max(0, +$('#sWarm').value || 0);
+  scfg.journey = $('#sJourney').value;
+  scfg.dist    = Math.max(0, +$('#sDist').value || 0);
+  scfg.div     = $('#sDiv').value;
+}
+function specOf(s){
+  const bits = [];
+  bits.push(`${s.work} ${s.unit}`);
+  if(s.equip === 'Kroppsvikt') bits.push('Kroppsvikt');
+  else{
+    if(s.kg) bits.push(`${s.qty||1} \u00d7 ${s.kg} kg`);
+    bits.push(SHORT[s.equip] ? `${s.equip}` : s.equip);
+  }
+  return bits.join(' \u00b7 ');
+}
+
+/* ===================== Flikar & lagring ===================== */
+function setMode(m){
+  mode = m;
+  $('#tabHiit').classList.toggle('on', m==='hiit');
+  $('#tabSt').classList.toggle('on', m==='stations');
+  $('#paneHiit').classList.toggle('on', m==='hiit');
+  $('#paneSt').classList.toggle('on', m==='stations');
+  $('#buildSub').textContent = m==='hiit'
+    ? 'Bygg passet. Slumpa om du inte orkar tänka.'
+    : 'En övning per station, journey emellan. Klockan räknar upp.';
+  save();
+}
+$('#tabHiit').onclick = () => setMode('hiit');
+$('#tabSt').onclick   = () => setMode('stations');
+
+function save(){
+  try{ readCfg(); readScfg(); }catch(e){}
+  store.set('hiitrun2', JSON.stringify({mode, cfg, blocks, scfg, stations}));
+}
+function load(){
+  try{
+    const d = JSON.parse(store.get('hiitrun2'));
+    if(d){
+      cfg = d.cfg || cfg; blocks = d.blocks || [];
+      scfg = d.scfg || scfg; stations = d.stations || [];
+      mode = d.mode || 'hiit';
+    }
+  }catch(e){}
+  if(!blocks.length) blocks = [randomBlock(),randomBlock(),randomBlock(),randomBlock()];
+  if(!stations.length) stations = ddStations();
+  $('#cfgWarm').value=cfg.warm; $('#cfgLaps').value=cfg.laps;
+  $('#cfgAmrap').value=cfg.amrap; $('#cfgDist').value=cfg.dist;
+  $('#sWarm').value=scfg.warm; $('#sJourney').value=scfg.journey;
+  $('#sDist').value=scfg.dist; $('#sDiv').value=scfg.div;
+}
+load(); setMode(mode); syncBlockCount(); renderBlocks(); renderStations();
+
 ['#cfgWarm','#cfgLaps','#cfgAmrap','#cfgDist'].forEach(s=>{
   $(s).oninput = () => { syncBlockCount(); renderBlocks(); save(); };
 });
+['#sWarm','#sJourney','#sDist'].forEach(s=>{
+  $(s).oninput = () => { readScfg(); renderStations(); save(); };
+});
+$('#sDiv').onchange = () => {
+  readScfg();
+  if(confirm('Växla till ' + (scfg.div==='f'?'damvikter':'herrvikter') + ' och återställa stationerna till Deadly Dozen?')){
+    stations = ddStations();
+  }
+  renderStations(); save();
+};
 $('#shuffle').onclick = () => { syncBlockCount(); blocks = blocks.map(randomBlock); renderBlocks(); save(); beep(660,.05); };
+$('#addSt').onclick = () => { stations.push({name:'',equip:'Kroppsvikt',work:20,unit:'reps',qty:0,kg:0}); renderStations(); save(); };
+$('#loadDD').onclick = () => {
+  if(stations.length && !confirm('Ersätt stationerna med Deadly Dozen?')) return;
+  readScfg(); stations = ddStations();
+  $('#sJourney').value = 'Löpning'; $('#sDist').value = 400; readScfg();
+  renderStations(); save(); beep(660,.05);
+};
 
-function save(){ store.set('hiitrun', JSON.stringify({cfg, blocks})); }
-function load(){
-  try{
-    const d = JSON.parse(store.get('hiitrun'));
-    if(d && d.blocks && d.blocks.length){
-      cfg = d.cfg; blocks = d.blocks;
-      $('#cfgWarm').value=cfg.warm; $('#cfgLaps').value=cfg.laps;
-      $('#cfgAmrap').value=cfg.amrap; $('#cfgDist').value=cfg.dist;
-      return;
-    }
-  }catch(e){}
-  blocks = [randomBlock(),randomBlock(),randomBlock(),randomBlock()];
-}
-load(); syncBlockCount(); renderBlocks();
-
-/* ---------- Ljud & skärm ---------- */
+/* ===================== Ljud & skärm ===================== */
 let ac;
 function beep(freq=880, len=.12, vol=.5){
   try{
@@ -311,88 +523,123 @@ async function keepAwake(on){
   }catch(e){}
 }
 
-/* ---------- Passmotorn ---------- */
+/* ===================== Passmotorn ===================== */
 let phases = [], idx = 0, t = 0, paused = false, tick = null, rounds = [], log = [], total = 0;
-const COLOR = {warm:'var(--warm)', amrap:'var(--amrap)', run:'var(--run)'};
+const COLOR = {warm:'var(--warm)', amrap:'var(--amrap)', run:'var(--run)', journey:'var(--run)', labour:'var(--amrap)'};
 const fmt = s => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 
 function buildPhases(){
   phases = [];
-  if(cfg.warm > 0) phases.push({type:'warm', dur:cfg.warm*60});
-  for(let i=0;i<cfg.laps;i++){
-    phases.push({type:'amrap', dur:cfg.amrap*60, block:i});
-    if(cfg.dist > 0) phases.push({type:'run', block:i});
+  if(mode === 'hiit'){
+    if(cfg.warm > 0) phases.push({type:'warm', dur:cfg.warm*60});
+    for(let i=0;i<cfg.laps;i++){
+      phases.push({type:'amrap', dur:cfg.amrap*60, block:i});
+      if(cfg.dist > 0) phases.push({type:'run', block:i});
+    }
+  } else {
+    if(scfg.warm > 0) phases.push({type:'warm', dur:scfg.warm*60});
+    stations.forEach((s,i)=>{
+      if(scfg.journey && scfg.dist > 0) phases.push({type:'journey', st:i});
+      phases.push({type:'labour', st:i});
+    });
   }
 }
 function renderTrack(){
   $('#track').innerHTML = phases.map((p,i)=>
-    `<i class="${p.type==='run'?'run ':''}${i<idx?'done':i===idx?'now':''}"></i>`).join('');
+    `<i class="${(p.type==='run'||p.type==='journey')?'run ':''}${i<idx?'done':i===idx?'now':''}"></i>`).join('');
 }
 function enter(i){
   idx = i;
   if(idx >= phases.length) return finish();
   const p = phases[idx];
-  t = p.type === 'run' ? 0 : p.dur;
+  t = p.dur ? p.dur : 0;                 // nedräkning bara där en tid är satt
   paused = false; $('#pause').textContent = 'Paus';
   $('#run').style.backgroundColor = COLOR[p.type];
   renderTrack();
+  $('#spec').textContent = '';
+  $('#counter').style.display = 'none';
 
-  const lapNo = p.block != null ? p.block+1 : null;
-  $('#lapLabel').textContent = lapNo ? `Varv ${lapNo} av ${cfg.laps}` : 'Start';
-  $('#phaseLabel').textContent = p.type==='warm' ? 'Uppvärmning' : p.type==='amrap' ? `${cfg.amrap} min AMRAP` : `${cfg.dist} m`;
-
-  if(p.type === 'amrap'){
-    $('#what').innerHTML = blocks[p.block].map(e=>`<div><span>${e.reps} \u00d7</span> ${e.name||'—'}</div>`).join('');
+  if(p.type === 'warm'){
+    $('#lapLabel').textContent = 'Start';
+    $('#phaseLabel').textContent = 'Uppvärmning';
+    $('#what').innerHTML = '<div>Uppvärmning</div>';
+    $('#hint').textContent = 'Rörlighet, lätt jogg, teknik';
+    $('#next').textContent = 'Hoppa över';
+  }
+  else if(p.type === 'amrap'){
+    $('#lapLabel').textContent = `Varv ${p.block+1} av ${cfg.laps}`;
+    $('#phaseLabel').textContent = `${cfg.amrap} min AMRAP`;
+    $('#what').innerHTML = blocks[p.block].map(e=>`<div><span>${e.reps} \u00d7</span> ${esc(e.name)||'—'}</div>`).join('');
     $('#counter').style.display = 'flex';
     $('#varvN').textContent = rounds[p.block] || 0;
     $('#hint').textContent = 'Så många varv du hinner';
     $('#next').textContent = 'Hoppa över';
-  } else if(p.type === 'run'){
-    $('#what').innerHTML = `<div>Spring ${cfg.dist} m</div>`;
-    $('#counter').style.display = 'none';
+  }
+  else if(p.type === 'run'){
+    $('#lapLabel').textContent = `Varv ${p.block+1} av ${cfg.laps}`;
+    $('#phaseLabel').textContent = 'Löpning';
+    $('#what').innerHTML = `<div>${cfg.dist} m</div>`;
     $('#hint').textContent = 'Tiden räknar upp';
     $('#next').textContent = 'Klar \u2192';
-  } else {
-    $('#what').innerHTML = '<div>Uppvärmning</div>';
-    $('#counter').style.display = 'none';
-    $('#hint').textContent = 'Rörlighet, lätt jogg, teknik';
-    $('#next').textContent = 'Hoppa över';
+  }
+  else if(p.type === 'journey'){
+    $('#lapLabel').textContent = `Station ${p.st+1} av ${stations.length}`;
+    $('#phaseLabel').textContent = 'Journey';
+    $('#what').innerHTML = `<div>${scfg.dist} m ${esc(scfg.journey)}</div>`;
+    $('#spec').textContent = 'Nästa: ' + (stations[p.st].name || 'station ' + (p.st+1));
+    $('#hint').textContent = 'Tiden räknar upp';
+    $('#next').textContent = 'Klar \u2192';
+  }
+  else if(p.type === 'labour'){
+    const s = stations[p.st];
+    $('#lapLabel').textContent = `Station ${p.st+1} av ${stations.length}`;
+    $('#phaseLabel').textContent = 'Labour';
+    $('#what').innerHTML = `<div>${esc(s.name) || 'Station ' + (p.st+1)}</div>`;
+    $('#spec').textContent = specOf(s);
+    $('#hint').textContent = 'Tiden räknar upp';
+    $('#next').textContent = 'Klar \u2192';
   }
   draw();
-  beep(p.type==='run' ? 520 : 880, .18);
+  beep(p.type==='run'||p.type==='journey' ? 520 : 880, .18);
 }
 function draw(){
   $('#clock').textContent = fmt(Math.max(0,t));
+  $('#totLabel').innerHTML = '<span>TOTALT</span>' + fmt(total);
   const p = phases[idx];
-  $('#clock').classList.toggle('warn', p && p.type!=='run' && t<=5 && t>0);
+  $('#clock').classList.toggle('warn', !!(p && p.dur && t<=5 && t>0));
 }
 function step(){
   if(paused || idx >= phases.length) return;
   const p = phases[idx];
   total++;
-  if(p.type === 'run'){ t++; }
-  else {
+  if(p.dur){
     t--;
     if(t <= 3 && t > 0) beep(700,.08,.35);
     if(t <= 0){ closePhase(); return enter(idx+1); }
+  } else {
+    t++;
   }
   draw();
 }
 function closePhase(){
   const p = phases[idx];
-  if(p.type === 'run') log.push({label:`Löpning ${p.block+1} \u00b7 ${cfg.dist} m`, val:fmt(t)});
-  if(p.type === 'amrap') log.push({label:`Block ${p.block+1}`, val:`${rounds[p.block]||0} varv`});
+  if(p.type === 'run')     log.push({label:`Löpning ${p.block+1} \u00b7 ${cfg.dist} m`, val:fmt(t), j:true});
+  if(p.type === 'amrap')   log.push({label:`Block ${p.block+1}`, val:`${rounds[p.block]||0} varv`});
+  if(p.type === 'journey') log.push({label:`Journey ${p.st+1} \u00b7 ${scfg.dist} m`, val:fmt(t), j:true});
+  if(p.type === 'labour')  log.push({label:`${p.st+1}. ${stations[p.st].name || 'Station'}`, val:fmt(t)});
 }
 function finish(){
   clearInterval(tick); tick = null; keepAwake(false);
   $('#totalTime').textContent = fmt(total);
-  $('#summary').innerHTML = log.map(r=>`<tr><td class="lbl">${r.label}</td><td>${r.val}</td></tr>`).join('');
+  $('#summary').innerHTML = log.map(r=>`<tr class="${r.j?'j':''}"><td class="lbl">${esc(r.label)}</td><td>${r.val}</td></tr>`).join('');
   show('done'); beep(440,.5,.6);
 }
 function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on', s.id===id)); }
 
 $('#go').onclick = () => {
-  readCfg(); save(); buildPhases();
+  readCfg(); readScfg(); save();
+  if(mode === 'stations' && !stations.length){ alert('Lägg till minst en station.'); return; }
+  buildPhases();
   rounds = []; log = []; total = 0;
   show('run'); keepAwake(true); beep(880,.2);
   enter(0);
@@ -407,7 +654,7 @@ $('#tapvarv').onclick = () => {
   $('#varvN').textContent = rounds[b];
   beep(1040,.05,.3);
 };
-$('#again').onclick = () => { show('build'); renderBlocks(); };
+$('#again').onclick = () => { show('build'); renderBlocks(); renderStations(); };
 document.addEventListener('visibilitychange', () => { if(!document.hidden && wake === null && $('#run').classList.contains('on')) keepAwake(true); });
 
 /* Offline-läge */

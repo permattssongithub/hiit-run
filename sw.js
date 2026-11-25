@@ -1,7 +1,7 @@
 /* HIIT&Run – service worker.
    Höj siffran i CACHE varje gång du ändrar index.html, annars ligger
    den gamla versionen kvar i telefonen. */
-const CACHE = 'hiitrun-v1';
+const CACHE = 'hiitrun-v3';
 const FILES = [
   './',
   './index.html',
